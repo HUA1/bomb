@@ -1,0 +1,66 @@
+var bomb = function(){
+	this.alert = function(text,arg){
+		if(!text && !arg) {
+			throw 'This function need text or args';
+			return false;
+		};
+		
+		this.text = text;
+		
+		this.args = {
+			title : '提示',
+			sure : false,
+			close :false
+		};
+		if(arg){
+			if(arg.title){
+				this.args.title = arg.title ? arg.title : '提示';
+			}
+			if(arg.sure){
+				this.args.sure = arg.sure;
+			}
+			if(arg.close){
+				this.args.close = arg.close;
+			}
+		}
+		
+		var bombWrap = '<div id="wBomb-bg" style="position:fixed;width:100%;height:100%;background:rgba(0,0,0,0.6);top:0px;left:0px;z-index:9999"></div>';
+		var bombMain = '<div id="wBomb-main" style="position: fixed;top: 100px;left: 50%;border: 1px solid #000;border-radius: 5px;padding: 0;width: 300px;margin-left: -150px;z-index:10000;background:#fff;box-shadow:0px 0 5px #000;overflow: hidden;"><div class="wbTitle" style="position: relative;height: 35px;line-height: 35px;padding: 0 15px;font-size: 16px;border-bottom: 1px solid #efefef;overflow: hidden;cursor: all-scroll;background:#ccc;">'+this.args.title+'<a href="javascript:;" style="display:block;float:right;" id="wBomb-close">x</a></div><div class="wbMain" style="padding:10px 15px;line-height:25px;"><p>'+this.text+'</p></div><div style="position: relative;height: 35px;line-height: 35px;padding: 0 15px;font-size: 16px;border-top: 1px solid #efefef;overflow: hidden;"><a href="javascript:;" style="float:right" id="wBomb-sure">确定</a></div></div>';
+
+		$('body').append(bombWrap);
+		$('body').append(bombMain);
+		
+		var _sure = this.args.sure;
+		var _close = this.args.close;
+		
+		$('#wBomb-sure').click(function(){
+			$('#wBomb-main').fadeOut().remove();
+			$('#wBomb-bg').fadeOut().remove();
+			if(arg && arg.sure){
+				_sure();
+			}
+		});
+		
+		$('#wBomb-close').click(function(){
+			$('#wBomb-main').fadeOut().remove();
+			$('#wBomb-bg').fadeOut().remove();
+			if(arg && arg.close){
+				_close();
+			}
+			
+			
+		});
+	}
+};
+
+//调用方式;
+var c = new bomb();
+c.alert('信息上传成功，感谢上传！',{
+	title:'成功',
+	sure:function(){
+		console.log('处理确定操作');
+	},
+	close:function(){
+		console.log('处理关闭操作');
+	}
+});
