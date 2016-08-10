@@ -1,3 +1,4 @@
+/*测试git*/
 var bomb = function(){
 	this.alert = function(text,arg){
 		if(!text && !arg) {
